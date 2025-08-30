@@ -68,7 +68,7 @@ typedef struct {
     int tamanho;           // Tamanho do navio em células
     char orientacao;       // 'H' = horizontal, 'V' = vertical, 'D' = diagonal
     int id;               // Identificador único do navio
-    int foiDestruido;     // ---> NOVO: Flag para saber se o navio já foi destruído (0 = não, 1 = sim)
+    int foiDestruido;     // Flag para saber se o navio já foi destruído (0 = não, 1 = sim)
 } Navio;
 
 /**
@@ -263,8 +263,8 @@ int letraParaColuna(char letra) {
 }
 
 /**
- * Exibe o tabuleiro completo com formatação melhorada
- * Versão otimizada para melhor legibilidade com colunas A-J e linhas 0-9
+ * ---> FUNÇÃO MODIFICADA
+ * Exibe o tabuleiro completo com formatação alinhada e legível.
  *
  * @param tabuleiro Matriz do tabuleiro a ser exibida
  */
@@ -273,30 +273,33 @@ void exibirTabuleiro(int tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO]) {
     printf("║        TABULEIRO DE BATALHA NAVAL    ║\n");
     printf("╚══════════════════════════════════════╝\n");
 
-    // Cabeçalho das colunas (A-J)
-    printf("     ");
+    // Cabeçalho das colunas (A-J), com 4 espaços de padding para alinhar com as linhas
+    printf("    ");
     for (int j = 0; j < TAMANHO_TABULEIRO; j++) {
-        printf("  %c", colunaParaLetra(j));
+        printf(" %c ", colunaParaLetra(j)); // Célula com 3 caracteres de largura
     }
-    printf("\n   ┌");
+    printf("\n");
+
+    // Borda superior, com 3 espaços de padding
+    printf("   ┌");
     for (int j = 0; j < TAMANHO_TABULEIRO; j++) {
-        printf("────");
+        printf("───"); // 3 traços por célula
     }
     printf("┐\n");
 
     // Linhas do tabuleiro (0-9)
     for (int i = 0; i < TAMANHO_TABULEIRO; i++) {
-        printf(" %d │", i);
+        printf(" %d │", i); // Cabeçalho da linha com 4 caracteres de largura
         for (int j = 0; j < TAMANHO_TABULEIRO; j++) {
-            printf("%3d", tabuleiro[i][j]);
+            printf(" %d ", tabuleiro[i][j]); // Célula de dados com 3 caracteres
         }
-        printf(" │\n");
+        printf("│\n"); // Borda direita da linha
     }
 
-    // Rodapé
+    // Borda inferior
     printf("   └");
     for (int j = 0; j < TAMANHO_TABULEIRO; j++) {
-        printf("───");
+        printf("───"); // 3 traços por célula
     }
     printf("┘\n");
 
@@ -305,6 +308,7 @@ void exibirTabuleiro(int tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO]) {
     printf("   1 = Água atingida   2 = Navio atingido\n");
     printf("   Colunas: A-J  |  Linhas: 0-9\n");
 }
+
 
 /**
  * Exibe as coordenadas dos navios posicionados de forma organizada
@@ -418,7 +422,7 @@ void exibirHabilidade(int matriz[TAMANHO_HABILIDADE][TAMANHO_HABILIDADE], const 
     }
     printf("\n");
 
-    for (int i = 0; i < TAMANHO_HABILIDADE; i++) {
+    for (int i = 0; i < TAMANHO_HABILidade; i++) {
         printf(" %d: ", i);
         for (int j = 0; j < TAMANHO_HABILIDADE; j++) {
             if (matriz[i][j] == AREA_AFETADA) {
@@ -585,7 +589,7 @@ int posicionarNaviosManualmente(int tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEI
             navios[i].tamanho = tamanhosNavios[i];
             navios[i].orientacao = orientacao;
             navios[i].id = i + 1;
-            navios[i].foiDestruido = 0; // ---> NOVO: Inicializa o status do navio
+            navios[i].foiDestruido = 0; // Inicializa o status do navio
 
             // Tenta posicionar
             int resultado = posicionarNavio(tabuleiro, navios[i]);
@@ -635,7 +639,6 @@ int posicionarNaviosManualmente(int tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEI
 
 
 /**
- * ---> NOVA FUNÇÃO
  * Verifica todos os navios para ver se algum foi destruído após um ataque.
  * Atualiza as estatísticas e o status do navio se for o caso.
  *
@@ -691,7 +694,7 @@ void aplicarHabilidadeNoTabuleiro(int tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABUL
                                   int habilidade[TAMANHO_HABILIDADE][TAMANHO_HABILIDADE],
                                   int centroLinha, int centroColuna,
                                   const char* nomeHabilidade,
-                                  Navio navios[], int quantidadeNavios, // ---> PARÂMETROS ADICIONADOS
+                                  Navio navios[], int quantidadeNavios,
                                   EstatisticasJogo* stats) {
 
     const int deslocamento = TAMANHO_HABILIDADE / 2;
@@ -732,7 +735,7 @@ void aplicarHabilidadeNoTabuleiro(int tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABUL
         }
     }
 
-    // ---> NOVO: Verifica se algum navio foi destruído após a rodada de ataques
+    // Verifica se algum navio foi destruído após a rodada de ataques
     if (acertosNesteTiro > 0) {
         verificarNaviosDestruidos(tabuleiro, navios, quantidadeNavios, stats);
     }
@@ -768,7 +771,7 @@ void exibirEstatisticasFinais(EstatisticasJogo* stats) {
     if (stats->totalTiros > 0) {
         printf("📈 Taxa de acerto geral: %.1f%%\n", (float)stats->acertos / stats->totalTiros * 100);
     }
-    printf("🚢 Navios destruídos: %d de %d\n", stats->naviosDestruidos, MAX_NAVIOS); // Melhoria na exibição
+    printf("🚢 Navios destruídos: %d de %d\n", stats->naviosDestruidos, MAX_NAVIOS);
 }
 
 /*
@@ -855,19 +858,16 @@ int main() {
 
     // Ataque com CONE
     if (lerCoordenadaAtaque("CONE", &ataques[0])) {
-        // ---> MODIFICADO: Passa a lista de navios para a função de ataque
         aplicarHabilidadeNoTabuleiro(tabuleiro, habilidadeCone, ataques[0].linha, ataques[0].coluna, "CONE", navios, MAX_NAVIOS, &stats);
     }
 
     // Ataque com CRUZ
     if (lerCoordenadaAtaque("CRUZ", &ataques[1])) {
-        // ---> MODIFICADO: Passa a lista de navios para a função de ataque
         aplicarHabilidadeNoTabuleiro(tabuleiro, habilidadeCruz, ataques[1].linha, ataques[1].coluna, "CRUZ", navios, MAX_NAVIOS, &stats);
     }
 
     // Ataque com OCTAEDRO
     if (lerCoordenadaAtaque("OCTAEDRO", &ataques[2])) {
-        // ---> MODIFICADO: Passa a lista de navios para a função de ataque
         aplicarHabilidadeNoTabuleiro(tabuleiro, habilidadeOctaedro, ataques[2].linha, ataques[2].coluna, "OCTAEDRO", navios, MAX_NAVIOS, &stats);
     }
 

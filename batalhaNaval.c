@@ -56,7 +56,7 @@
  */
 typedef struct {
     int linha;      // Linha no tabuleiro (0-9)
-    int coluna;     // Coluna no tabuleiro (0-9)
+    int coluna;     // Coluna no tabuleiro (A-J)
 } Coordenada;
 
 /**

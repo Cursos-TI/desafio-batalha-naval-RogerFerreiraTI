@@ -270,7 +270,7 @@ int letraParaColuna(char letra) {
  */
 void exibirTabuleiro(int tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO]) {
     printf("\n╔══════════════════════════════════════╗\n");
-    printf("║        TABULEIRO DE BATALHA NAVAL    ║\n");
+    printf("║      TABULEIRO DE BATALHA NAVAL      ║\n");
     printf("╚══════════════════════════════════════╝\n");
 
     // Cabeçalho das colunas (A-J), com 4 espaços de padding para alinhar com as linhas
@@ -422,7 +422,7 @@ void exibirHabilidade(int matriz[TAMANHO_HABILIDADE][TAMANHO_HABILIDADE], const 
     }
     printf("\n");
 
-    for (int i = 0; i < TAMANHO_HABILidade; i++) {
+    for (int i = 0; i < TAMANHO_HABILIDADE; i++) {
         printf(" %d: ", i);
         for (int j = 0; j < TAMANHO_HABILIDADE; j++) {
             if (matriz[i][j] == AREA_AFETADA) {
